@@ -3,7 +3,7 @@ addict==2.4.0
 altair==4.2.2
 attrs==23.1.0
 backports-zoneinfo==0.2.1
-basicsr==1.2.0+733ceb2
+basicsr==1.2.0
 beautifulsoup4==4.12.2
 blas==1.0
 blinker==1.6.2
