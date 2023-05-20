@@ -4,7 +4,7 @@
 
 ## Download training and testing data for single-image motion deblurring task
 import os
-# import gdown
+import gdown
 import shutil
 
 import argparse
@@ -27,7 +27,7 @@ for data in args.data.split('-'):
     if data == 'train':
         print('GoPro Training Data!')
         os.makedirs(os.path.join('Datasets', 'Downloads'), exist_ok=True)
-        # gdown.download(id=GoPro_train, output='Datasets/Downloads/train.zip', quiet=False)
+        gdown.download(id=GoPro_train, output='Datasets/Downloads/train.zip', quiet=False)
         os.system(f'gdrive download {GoPro_train} --path Datasets/Downloads/')
         print('Extracting GoPro data...')
         shutil.unpack_archive('Datasets/Downloads/train.zip', 'Datasets/Downloads')
@@ -37,7 +37,7 @@ for data in args.data.split('-'):
     if data == 'test':
         if dataset == 'all' or dataset == 'GoPro':
             print('GoPro Testing Data!')
-            # gdown.download(id=GoPro_test, output='Datasets/test.zip', quiet=False)
+            gdown.download(id=GoPro_test, output='Datasets/test.zip', quiet=False)
             os.system(f'gdrive download {GoPro_test} --path Datasets/')
             print('Extracting GoPro Data...')
             shutil.unpack_archive('Datasets/test.zip', 'Datasets')
