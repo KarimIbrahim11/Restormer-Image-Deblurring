@@ -3,13 +3,25 @@ addict==2.4.0
 altair==4.2.2
 attrs==23.1.0
 backports.zoneinfo==0.2.1
+<<<<<<< Updated upstream
 beautifulsoup4==4.12.2
 blinker==1.6.2
 cachetools==5.3.0
+=======
+basicsr
+beautifulsoup4==4.12.2
+blinker==1.6.2
+cachetools==5.3.0
+certifi
+>>>>>>> Stashed changes
 charset-normalizer==3.1.0
 click==8.1.3
 colorama==0.4.6
 cycler==0.11.0
+<<<<<<< Updated upstream
+=======
+Cython
+>>>>>>> Stashed changes
 decorator==5.1.1
 einops==0.6.1
 entrypoints==0.4
@@ -39,9 +51,17 @@ MarkupSafe==2.1.2
 matplotlib==3.5.3
 mdurl==0.1.2
 mkl-fft==1.3.1
+<<<<<<< Updated upstream
 mkl-service==2.4.0
 natsort==8.3.1
 networkx==2.6.3
+=======
+mkl-random 
+mkl-service==2.4.0
+natsort==8.3.1
+networkx==2.6.3
+numpy
+>>>>>>> Stashed changes
 oauthlib==3.2.2
 opencv-python==4.7.0.72
 packaging==23.1
@@ -69,6 +89,10 @@ rsa==4.9
 scikit-image==0.19.3
 scikit-learn==1.0.2
 scipy==1.7.3
+<<<<<<< Updated upstream
+=======
+six
+>>>>>>> Stashed changes
 smmap==5.0.0
 soupsieve==2.4.1
 streamlit==1.22.0
@@ -85,6 +109,10 @@ torch==1.8.1
 torchvision==0.9.1
 tornado==6.2
 tqdm==4.65.0
+<<<<<<< Updated upstream
+=======
+typing_extensions
+>>>>>>> Stashed changes
 tzdata==2023.3
 tzlocal==5.0.1
 urllib3==1.26.15

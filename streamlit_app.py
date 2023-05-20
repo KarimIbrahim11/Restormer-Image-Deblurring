@@ -8,6 +8,7 @@ from PIL import Image
 from skimage.util import img_as_ubyte
 from io import BytesIO
 import cv2
+import numpy as np
 
 
 # Loading the model Once for Optimization
@@ -95,6 +96,17 @@ if __name__ == '__main__':
             restored = restored[:, :, :h, :w]
             restored = restored.permute(0, 2, 3, 1).cpu().detach().numpy()
             restored = img_as_ubyte(restored[0])
+
+            # Post Processing
+            # Image Sharpening
+            sharpen_filter = np.array([[-1, -1, -1],
+                                       [-1, 9, -1],
+                                       [-1, -1, -1]])
+            sharpen_filter = np.array([[0, -1, 0],
+                                       [-1, 5, -1],
+                                       [0, -1, 0]])
+
+            restored = cv2.filter2D(restored, -1, sharpen_filter)
 
             # Show the user that we have finished
             onscreen.empty()
