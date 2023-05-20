@@ -16,6 +16,13 @@ from io import BytesIO
 import numpy as np
 
 
+if torch.cuda.is_available():
+    print("************** GPU INFERENCE **************")
+    device = "cuda:0"
+else:
+    print("************** CPU INFERENCE **************")
+    device = "cpu"
+
 # Loading the model Once for Optimization
 @st.cache_resource
 def loadModel():
@@ -28,7 +35,7 @@ def loadModel():
     # Load Model Arch and convert to CUDA
     load_arch = run_path(os.path.join('basicsr', 'models', 'archs', 'restormer_arch.py'))
     model = load_arch['Restormer'](**parameters)
-    model.cuda()
+    model.to(device)
     # Load weights&Params to Model
     checkpoint = torch.load(weights)
     model.load_state_dict(checkpoint['params'])
@@ -80,15 +87,16 @@ if __name__ == '__main__':
         img_multiple_of = 8
         print(f"\n ==> Running {task} with weights {weights}\n ")
         with torch.no_grad():
-            torch.cuda.ipc_collect()
-            torch.cuda.empty_cache()
+            if device == "cuda":
+                torch.cuda.ipc_collect()
+                torch.cuda.empty_cache()
 
             img = Image.open(uploaded_file).convert('RGB')
             img = np.array(img)
             # # Convert RGB to BGR
             # img = open_cv_image[:, :, ::-1].copy()
             # img = cv2.cvtColor(cv2.imread("img." + pilImg.format), cv2.COLOR_BGR2RGB)
-            input_ = torch.from_numpy(img).float().div(255.).permute(2, 0, 1).unsqueeze(0).cuda()
+            input_ = torch.from_numpy(img).float().div(255.).permute(2, 0, 1).unsqueeze(0).to(device)
 
             # Pad the input if not_multiple_of 8
             h, w = input_.shape[2], input_.shape[3]
