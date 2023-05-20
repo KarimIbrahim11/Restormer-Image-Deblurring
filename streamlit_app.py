@@ -7,7 +7,7 @@ from runpy import run_path
 from PIL import Image
 from skimage.util import img_as_ubyte
 from io import BytesIO
-import cv2
+# import cv2
 import numpy as np
 
 
@@ -78,7 +78,12 @@ if __name__ == '__main__':
         with torch.no_grad():
             torch.cuda.ipc_collect()
             torch.cuda.empty_cache()
-            img = cv2.cvtColor(cv2.imread("img." + pilImg.format), cv2.COLOR_BGR2RGB)
+
+            pil_image = Image.open(uploaded_file).convert('RGB')
+            open_cv_image = np.array(pil_image)
+            # Convert RGB to BGR
+            img = open_cv_image[:, :, ::-1].copy()
+            # img = cv2.cvtColor(cv2.imread("img." + pilImg.format), cv2.COLOR_BGR2RGB)
             input_ = torch.from_numpy(img).float().div(255.).permute(2, 0, 1).unsqueeze(0).cuda()
 
             # Pad the input if not_multiple_of 8
@@ -97,16 +102,16 @@ if __name__ == '__main__':
             restored = restored.permute(0, 2, 3, 1).cpu().detach().numpy()
             restored = img_as_ubyte(restored[0])
 
-            # Post Processing
-            # Image Sharpening
-            sharpen_filter = np.array([[-1, -1, -1],
-                                       [-1, 9, -1],
-                                       [-1, -1, -1]])
-            sharpen_filter = np.array([[0, -1, 0],
-                                       [-1, 5, -1],
-                                       [0, -1, 0]])
-
-            restored = cv2.filter2D(restored, -1, sharpen_filter)
+            # # Post Processing
+            # # Image Sharpening
+            # # sharpen_filter = np.array([[-1, -1, -1],
+            # #                            [-1, 9, -1],
+            # #                            [-1, -1, -1]])
+            # sharpen_filter = np.array([[0, -1, 0],
+            #                            [-1, 5, -1],
+            #                            [0, -1, 0]])
+            #
+            # restored = cv2.filter2D(restored, -1, sharpen_filter)
 
             # Show the user that we have finished
             onscreen.empty()
