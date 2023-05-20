@@ -78,6 +78,12 @@ with torch.no_grad():
         filename = os.path.split(filepath)[-1]
         cv2.imwrite(os.path.join(out_dir, filename), cv2.cvtColor(restored, cv2.COLOR_RGB2BGR))
 
+
+
+
+
+# Visualization
+
 import matplotlib.pyplot as plt
 
 inp_filenames = natsorted(glob(os.path.join(input_dir, '*')))
