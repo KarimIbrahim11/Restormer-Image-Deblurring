@@ -4,11 +4,12 @@ import os
 import torch.nn.functional as F
 import streamlit as st
 from runpy import run_path
-from PIL import Image
+from PIL import Image, ImageFilter
 from skimage.util import img_as_ubyte
 from io import BytesIO
 # import cv2
 import numpy as np
+from matplotlib import cm
 
 
 # Loading the model Once for Optimization
@@ -34,10 +35,10 @@ def loadModel():
 # Gets the download Link
 def downloadImgBtn(img):
     # Original image came from cv2 format, fromarray convert into PIL format
-    result = Image.fromarray(restored)
+    # result = Image.fromarray(restored)
     # Convert to Bytes
     buf = BytesIO()
-    result.save(buf, format="JPEG")
+    img.save(buf, format="JPEG")
     byte_im = buf.getvalue()
     return st.download_button(
         label="Download Restored Image",
@@ -79,10 +80,10 @@ if __name__ == '__main__':
             torch.cuda.ipc_collect()
             torch.cuda.empty_cache()
 
-            pil_image = Image.open(uploaded_file).convert('RGB')
-            open_cv_image = np.array(pil_image)
-            # Convert RGB to BGR
-            img = open_cv_image[:, :, ::-1].copy()
+            img = Image.open(uploaded_file).convert('RGB')
+            img = np.array(img)
+            # # Convert RGB to BGR
+            # img = open_cv_image[:, :, ::-1].copy()
             # img = cv2.cvtColor(cv2.imread("img." + pilImg.format), cv2.COLOR_BGR2RGB)
             input_ = torch.from_numpy(img).float().div(255.).permute(2, 0, 1).unsqueeze(0).cuda()
 
@@ -104,14 +105,16 @@ if __name__ == '__main__':
 
             # # Post Processing
             # # Image Sharpening
-            # # sharpen_filter = np.array([[-1, -1, -1],
-            # #                            [-1, 9, -1],
-            # #                            [-1, -1, -1]])
-            # sharpen_filter = np.array([[0, -1, 0],
-            #                            [-1, 5, -1],
-            #                            [0, -1, 0]])
-            #
-            # restored = cv2.filter2D(restored, -1, sharpen_filter)
+            sharpen_filter = [
+                0, -1, 0,
+                -1, 5, -1,
+                0, -1, 0
+            ]
+            im = Image.fromarray(restored.astype('uint8'), 'RGB')
+            # Create a kernel filter using the defined matrix
+            kernel_filter = ImageFilter.Kernel((3, 3), sharpen_filter)
+            # Apply the kernel filter to the image
+            restored = im.filter(kernel_filter)
 
             # Show the user that we have finished
             onscreen.empty()
