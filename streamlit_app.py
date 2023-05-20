@@ -71,6 +71,7 @@ if __name__ == '__main__':
         onscreen = st.empty()
         onscreen.text('Restoring...')
 
+        # Inference
         img_multiple_of = 8
         print(f"\n ==> Running {task} with weights {weights}\n ")
         with torch.no_grad():
